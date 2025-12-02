@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sana Atan Kalbim</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #fce4ec; /* Açık pembe arka plan */
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+        }
+
+        .heart-container {
+            /* Kalp ve mesajı merkezlemek için */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* Kalp şeklinin ana bloğu */
+        .heart {
+            position: relative;
+            width: 150px; /* Kalp büyüklüğü */
+            height: 150px;
+            background-color: #e91e63; /* Canlı pembe kalp rengi */
+            transform: rotate(-45deg); /* Kareyi döndürerek köşeyi aşağı bakar */
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            /* Animasyon uygulaması: 1 saniyede sonsuz döngüde atıp geri gelsin */
+            animation: pulse 1s infinite alternate ease-in-out;
+        }
+
+        /* Kalbin sol üst yarım dairesi */
+        .heart:before {
+            content: "";
+            position: absolute;
+            top: -75px; /* Kalp boyutunun yarısı */
+            left: 0;
+            width: 150px;
+            height: 150px;
+            background-color: #e91e63;
+            border-radius: 50%; /* Yarım daire yapar */
+        }
+
+        /* Kalbin sağ üst yarım dairesi */
+        .heart:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: -75px; /* Kalp boyutunun yarısı */
+            width: 150px;
+            height: 150px;
+            background-color: #e91e63;
+            border-radius: 50%; /* Yarım daire yapar */
+        }
+
+        /* Atma (Pulse) Animasyonu Tanımı */
+        @keyframes pulse {
+            0% {
+                transform: scale(1) rotate(-45deg); /* Normal boyut */
+            }
+            100% {
+                transform: scale(1.15) rotate(-45deg); /* %15 büyüt */
+            }
+        }
+
+        /* Mesaj Stili */
+        .message {
+            color: #d81b60; /* Koyu pembe yazı rengi */
+            font-size: 2em; /* Büyük yazı */
+            font-weight: bold;
+            margin-top: 50px; /* Kalbin altında boşluk */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Sevgi dolu küçük metin */
+        .small-text {
+            color: #4a148c; /* Morumsu bir renk */
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="heart-container">
+        <div class="heart"></div>
+
+        <p class="message">Burası Senin İçin Atıyor!</p>
+    </div>
+
+    <p class="small-text">Sana özel, en içten dileklerimle...</p>
+
+</body>
+</html>
