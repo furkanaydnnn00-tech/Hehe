@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sana Atan Kalbim</title>
-
+    <title>Animasyonlu Matematiksel Kalp</title>
     <style>
         body {
             display: flex;
@@ -13,91 +12,98 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background-color: #fce4ec; /* Açık pembe arka plan */
+            background-color: #000000; /* Siyah arka plan (Python'daki gibi) */
             font-family: 'Arial', sans-serif;
-            text-align: center;
+            color: white;
         }
-
-        .heart-container {
-            /* Kalp ve mesajı merkezlemek için */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 30px;
+        canvas {
+            border: 1px solid #333; /* Tuvali göstermek için kenarlık (isteğe bağlı) */
+            background-color: black;
         }
-
-        /* Kalp şeklinin ana bloğu */
-        .heart {
-            position: relative;
-            width: 150px; /* Kalp büyüklüğü */
-            height: 150px;
-            background-color: #e91e63; /* Canlı pembe kalp rengi */
-            transform: rotate(-45deg); /* Kareyi döndürerek köşeyi aşağı bakar */
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            /* Animasyon uygulaması: 1 saniyede sonsuz döngüde atıp geri gelsin */
-            animation: pulse 1s infinite alternate ease-in-out;
-        }
-
-        /* Kalbin sol üst yarım dairesi */
-        .heart:before {
-            content: "";
-            position: absolute;
-            top: -75px; /* Kalp boyutunun yarısı */
-            left: 0;
-            width: 150px;
-            height: 150px;
-            background-color: #e91e63;
-            border-radius: 50%; /* Yarım daire yapar */
-        }
-
-        /* Kalbin sağ üst yarım dairesi */
-        .heart:after {
-            content: "";
-            position: absolute;
-            top: 0;
-            right: -75px; /* Kalp boyutunun yarısı */
-            width: 150px;
-            height: 150px;
-            background-color: #e91e63;
-            border-radius: 50%; /* Yarım daire yapar */
-        }
-
-        /* Atma (Pulse) Animasyonu Tanımı */
-        @keyframes pulse {
-            0% {
-                transform: scale(1) rotate(-45deg); /* Normal boyut */
-            }
-            100% {
-                transform: scale(1.15) rotate(-45deg); /* %15 büyüt */
-            }
-        }
-
-        /* Mesaj Stili */
-        .message {
-            color: #d81b60; /* Koyu pembe yazı rengi */
-            font-size: 2em; /* Büyük yazı */
-            font-weight: bold;
-            margin-top: 50px; /* Kalbin altında boşluk */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Sevgi dolu küçük metin */
-        .small-text {
-            color: #4a148c; /* Morumsu bir renk */
-            font-size: 1.2em;
-            margin-top: 10px;
+        h1 {
+            color: #ff0044;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
 
-    <div class="heart-container">
-        <div class="heart"></div>
+    <h1>Senin İçin Atıyor</h1>
+    <canvas id="heartCanvas" width="500" height="500"></canvas>
 
-        <p class="message">Burası Senin İçin Atıyor!</p>
-    </div>
+    <script>
+        // Python'daki turtle kütüphanesi yerine canvas ve JavaScript kullanıyoruz.
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+        const scale = 15; // Kalp boyutunu ayarlayan çarpan
 
-    <p class="small-text">Sana özel, en içten dileklerimle...</p>
+        // Kalp Formülleri (Python'daki ile aynı mantık)
+        function heartX(t) {
+            return scale * (16 * Math.sin(t)**3);
+        }
+
+        function heartY(t) {
+            // Y eksenini ters çeviriyoruz çünkü canvas'ta y koordinatları aşağı doğru artar.
+            return scale * -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+        }
+
+        // Çizim Döngüsü Ayarları
+        let t = 0;
+        const tStep = 0.05; // Çizim adımı (ne kadar küçükse o kadar pürüzsüz)
+        const tMax = Math.PI * 2;
+        const speed = 15; // Animasyon hızı (milisaniye cinsinden, ne kadar yüksekse o kadar yavaş)
+
+        ctx.strokeStyle = '#ff0044'; // Kalp rengi (Kırmızı/Pembe)
+        ctx.lineWidth = 2; // Çizgi kalınlığı
+
+        let lastX, lastY;
+
+        // Animasyon Fonksiyonu
+        function drawHeart() {
+            if (t > tMax) {
+                // Çizim bittiğinde dur
+                return;
+            }
+
+            // Yeni noktayı hesapla
+            const x = centerX + heartX(t);
+            const y = centerY + heartY(t);
+
+            if (t === 0) {
+                // Başlangıç noktasını ayarla
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                lastX = x;
+                lastY = y;
+            } else {
+                // Mevcut noktaya çizgi çek
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                // Animasyon etkisi için sadece son adımı göster
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                lastX = x;
+                lastY = y;
+            }
+            
+            // t değerini bir sonraki adıma taşı
+            t += tStep;
+
+            // Animasyonu tekrar çağır (yavaş çizim için gecikme)
+            setTimeout(drawHeart, speed);
+        }
+
+        // Çizimi başlat
+        drawHeart();
+
+    </script>
 
 </body>
 </html>
